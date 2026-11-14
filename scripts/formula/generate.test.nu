@@ -15,14 +15,8 @@ def sidecars [scratch: path, valid: bool] {
   let decoy_digest = ("c" | fill --width 64 --character "c")
 
   for target in [
-    {
-      name: "aarch64-apple-darwin"
-      character: "a"
-    }
-    {
-      name: "x86_64-unknown-linux-gnu"
-      character: "b"
-    }
+    {name: "aarch64-apple-darwin", character: "a"}
+    {name: "x86_64-unknown-linux-gnu", character: "b"}
   ] {
     let digest = if $valid {
       $target.character | fill --width 64 --character $target.character
@@ -57,36 +51,12 @@ export def "test renders only the requested formula" [] {
 
 export def "test rejects invalid release inputs before writing" [] {
   for case in [
-    {
-      formula: "unknown"
-      tag: "v1.2.3"
-      checksum: "valid"
-    }
-    {
-      formula: "../example-tool"
-      tag: "v1.2.3"
-      checksum: "valid"
-    }
-    {
-      formula: "example-tool"
-      tag: "1.2.3"
-      checksum: "valid"
-    }
-    {
-      formula: "example-tool"
-      tag: "v1.2.3/other"
-      checksum: "valid"
-    }
-    {
-      formula: "example-tool"
-      tag: "v1.2.3"
-      checksum: "invalid"
-    }
-    {
-      formula: "example-tool"
-      tag: "v1.2.3"
-      checksum: "missing"
-    }
+    {formula: "unknown", tag: "v1.2.3", checksum: "valid"}
+    {formula: "../example-tool", tag: "v1.2.3", checksum: "valid"}
+    {formula: "example-tool", tag: "1.2.3", checksum: "valid"}
+    {formula: "example-tool", tag: "v1.2.3/other", checksum: "valid"}
+    {formula: "example-tool", tag: "v1.2.3", checksum: "invalid"}
+    {formula: "example-tool", tag: "v1.2.3", checksum: "missing"}
   ] {
     let scratch = (sandbox)
     let output = ($scratch | path join "formula.rb")
