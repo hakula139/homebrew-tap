@@ -8,9 +8,12 @@ export def select-formulae [
   changed: list<string>
 ]: nothing -> list<string> {
   let shared = ($changed | any {|file|
-    $file in [".github/workflows/formula.yml" "flake.nix" "flake.lock"] or (
-      ($file | str starts-with "scripts/formula/") and
-      not ($file | str starts-with "scripts/formula/templates/")
+    (
+      ($file | str starts-with ".github/workflows/") or
+      ($file in ["flake.nix" "flake.lock"]) or (
+        ($file | str starts-with "scripts/formula/") and
+        not ($file | str starts-with "scripts/formula/templates/")
+      )
     )
   })
 

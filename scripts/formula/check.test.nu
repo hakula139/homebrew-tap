@@ -40,6 +40,16 @@ export def "test selects affected formulae from a large catalog" [] {
     }
 
     {
+      changed: [".github/workflows/ci.yml"]
+      expected: $formulae
+    }
+
+    {
+      changed: [".github/workflows/update.yml"]
+      expected: $formulae
+    }
+
+    {
       changed: ["flake.nix"]
       expected: $formulae
     }
