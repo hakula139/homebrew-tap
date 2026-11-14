@@ -10,4 +10,5 @@ nixpkgs
 pkgs
 shellcheck
 shfmt
+substituters
 unmatch
