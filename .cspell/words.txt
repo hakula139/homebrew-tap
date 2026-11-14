@@ -2,6 +2,8 @@ cachix
 devkit
 direnv
 hakula
+linuxbrew
+mktemp
 nixfmt
 nixos
 nixpkgs

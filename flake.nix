@@ -32,9 +32,15 @@
       in
       {
         devShells.default = pkgs.mkShell {
-          packages = [ dk.nushell ];
+          packages = [
+            dk.nushell
+            dk.nu-test
+          ];
           inputsFrom = [ preCommit ];
         };
+
+        checks.tests = dk.nuTests { src = ./.; };
+
         formatter = pkgs.nixfmt-tree;
       }
     );
