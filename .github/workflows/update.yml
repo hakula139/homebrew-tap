@@ -1,0 +1,54 @@
+name: Update Formula
+
+on:
+  workflow_dispatch:
+    inputs:
+      formula:
+        description: Formula to update
+        type: string
+        required: true
+      tag:
+        description: Published release tag, including v
+        type: string
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: update-formula-${{ inputs.formula }}
+  cancel-in-progress: false
+
+jobs:
+  update:
+    name: Update Formula
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Create GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ secrets.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+          owner: hakula139
+          repositories: homebrew-tap
+          permission-contents: write
+          permission-pull-requests: write
+
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: main
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Set up Nix
+        uses: hakula139/devkit/.github/actions/setup-nix@v3
+
+      - name: Open formula PR
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          FORMULA: ${{ inputs.formula }}
+          TAG: ${{ inputs.tag }}
+        run: nix develop -c nu scripts/formula/open-pr.nu
