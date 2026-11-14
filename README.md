@@ -53,7 +53,7 @@ sidecars=$(mktemp -d)
 
 gh release download "$tag" \
   --repo "hakula139/$formula" \
-  --pattern "$formula-*.sha256" \
+  --pattern '*.sha256' \
   --dir "$sidecars"
 
 nix develop -c nu scripts/formula/generate.nu "$formula" "$tag" "$sidecars"

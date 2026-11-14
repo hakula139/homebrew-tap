@@ -10,7 +10,7 @@ def render [formula: string, tag: string, source_repo: string]: nothing -> strin
     (
       ^gh release download $tag
         --repo $source_repo
-        --pattern $"($formula)-*.sha256"
+        --pattern "*.sha256"
         --dir $scratch
     )
 

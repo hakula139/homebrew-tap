@@ -59,7 +59,7 @@ def check [files: list<string>, scratch: path] {
     (
       ^gh release download $tag
         --repo $"hakula139/($formula)"
-        --pattern $"($formula)-*.sha256"
+        --pattern "*.sha256"
         --dir $sidecars
     )
 
