@@ -5,8 +5,7 @@ on:
     inputs:
       formula:
         description: Formula to update
-        type: choice
-        options: [kiln, oxide-code]
+        type: string
         required: true
       tag:
         description: Published release tag, including v
@@ -52,4 +51,4 @@ jobs:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
           FORMULA: ${{ inputs.formula }}
           TAG: ${{ inputs.tag }}
-        run: nix develop -c bash scripts/open-homebrew-pr.sh
+        run: nix develop -c nu scripts/formula/open-pr.nu

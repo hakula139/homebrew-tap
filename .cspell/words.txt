@@ -10,3 +10,4 @@ nixpkgs
 pkgs
 shellcheck
 shfmt
+unmatch

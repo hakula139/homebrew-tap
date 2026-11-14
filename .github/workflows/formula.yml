@@ -27,33 +27,11 @@ jobs:
       - name: Set up Nix
         uses: hakula139/devkit/.github/actions/setup-nix@v3
 
-      - name: Check formula rendering
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          for file in Formula/*.rb; do
-            formula=$(basename "$file" .rb)
-            tag="v$(sed -nE 's/^  version "([^"]+)"$/\1/p' "$file")"
-            mkdir "$RUNNER_TEMP/$formula"
-            gh release download "$tag" \
-              --repo "hakula139/$formula" \
-              --pattern "$formula-*.sha256" \
-              --dir "$RUNNER_TEMP/$formula"
-            nix develop -c nu scripts/update-homebrew-formula.nu "$formula" "$tag" "$RUNNER_TEMP/$formula"
-          done
-          git diff --exit-code -- Formula
-
       - name: Put Homebrew on PATH
         if: runner.os == 'Linux'
         run: echo /home/linuxbrew/.linuxbrew/bin >> "$GITHUB_PATH"
 
-      # Homebrew requires a tap to install a local formula.
-      - name: Install and test formulae
-        run: |
-          brew tap-new --no-git local/check
-          cp Formula/*.rb "$(brew --repository local/check)/Formula/"
-          for file in Formula/*.rb; do
-            formula=$(basename "$file" .rb)
-            brew install "local/check/$formula"
-            brew test "local/check/$formula"
-          done
+      - name: Check formulae
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: nix develop -c nu scripts/formula/check.nu

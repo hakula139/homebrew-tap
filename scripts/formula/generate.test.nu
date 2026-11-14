@@ -1,6 +1,6 @@
 use std/assert
 
-const GENERATOR = path self "update-homebrew-formula.nu"
+const GENERATOR = path self "generate.nu"
 
 export def "test renders only the requested formula" [] {
   for case in [
@@ -64,7 +64,8 @@ export def "test rejects invalid release inputs before writing" [] {
       }
     }
 
-    let result = ^$nu.current-exe $GENERATOR $case.formula $case.tag $scratch --output $output | complete
+    let result = ^$nu.current-exe $GENERATOR $case.formula $case.tag $scratch --output $output
+      | complete
 
     assert ($result.exit_code != 0) $"Accepted invalid input: ($case)"
     assert equal (open --raw $output) "unchanged"

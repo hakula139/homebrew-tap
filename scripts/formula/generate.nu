@@ -1,20 +1,30 @@
 #!/usr/bin/env nu
 
-const SCRIPT_DIR = path self "."
+const TEMPLATES_DIR = path self "templates"
+
+# Validate a formula name and release tag before using them in paths or commands.
+export def validate [formula: string, tag: string] {
+  if $formula !~ '^[a-z0-9]+(-[a-z0-9]+)*$' {
+    error make {msg: "Expected a lowercase formula name separated by hyphens"}
+  }
+
+  if not ($TEMPLATES_DIR | path join $"($formula).rb" | path exists) {
+    error make {msg: $"No template found for ($formula)"}
+  }
+
+  if $tag !~ '^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$' {
+    error make {msg: "Expected a release tag including its v prefix"}
+  }
+}
 
 # Regenerate one Homebrew formula from a release's checksum sidecars.
-def main [
-  formula: string # kiln or oxide-code
+export def main [
+  formula: string # Formula name matching a template
   tag: string # Release tag, including the v prefix
   sidecars: string # Directory containing the release's .sha256 files
   --output: string # Output path, defaulting to Formula/<formula>.rb
 ] {
-  if $formula not-in ["kiln" "oxide-code"] {
-    error make {msg: "Formula must be kiln or oxide-code"}
-  }
-  if $tag !~ '^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$' {
-    error make {msg: "Expected a release tag including its v prefix"}
-  }
+  validate $formula $tag
 
   let checksums = ["aarch64-apple-darwin" "x86_64-unknown-linux-gnu"]
     | each {|target|
@@ -31,7 +41,7 @@ def main [
   let base = $"https://github.com/hakula139/($formula)/releases/download/($tag)"
   let destination = $output | default $"Formula/($formula).rb"
 
-  open --raw ($SCRIPT_DIR | path join $"($formula)-formula.rb")
+  open --raw ($TEMPLATES_DIR | path join $"($formula).rb")
     | str replace --all "{{base}}" $base
     | str replace --all "{{version}}" $version
     | str replace --all "{{mac_arm_sha}}" $checksums.0
