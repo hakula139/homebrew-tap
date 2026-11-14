@@ -20,7 +20,11 @@ Install the release GitHub App on this tap with Contents and Pull requests read/
 If notification or updating fails, correct the App installation and secrets, then rerun the updater for the published tag:
 
 ```bash
-gh workflow run update-formula.yml --repo hakula139/homebrew-tap --ref main -f formula=kiln -f tag=vX.Y.Z
+gh workflow run update-formula.yml \
+  --repo hakula139/homebrew-tap \
+  --ref main \
+  -f formula=kiln \
+  -f tag=vX.Y.Z
 ```
 
 A rerun reuses the formula/tag branch and updates its open PR. Tags outside the selected release policy are skipped.
@@ -28,7 +32,10 @@ A rerun reuses the formula/tag branch and updates its open PR. Tags outside the 
 To change a template, download that formula's published sidecars and regenerate it locally:
 
 ```bash
-gh release download vX.Y.Z --repo hakula139/kiln --pattern 'kiln-*.sha256' --dir /tmp/kiln-sidecars
+gh release download vX.Y.Z \
+  --repo hakula139/kiln \
+  --pattern 'kiln-*.sha256' \
+  --dir /tmp/kiln-sidecars
 nix develop -c nu scripts/update-homebrew-formula.nu kiln vX.Y.Z /tmp/kiln-sidecars
 ```
 
