@@ -17,7 +17,6 @@ def sidecars [scratch: path, valid: bool] {
       name: "aarch64-apple-darwin"
       character: "a"
     }
-
     {
       name: "x86_64-unknown-linux-gnu"
       character: "b"
@@ -58,31 +57,26 @@ export def "test rejects invalid release inputs before writing" [] {
       tag: "v1.2.3"
       checksum: "valid"
     }
-
     {
       formula: "../example-tool"
       tag: "v1.2.3"
       checksum: "valid"
     }
-
     {
       formula: "example-tool"
       tag: "1.2.3"
       checksum: "valid"
     }
-
     {
       formula: "example-tool"
       tag: "v1.2.3/other"
       checksum: "valid"
     }
-
     {
       formula: "example-tool"
       tag: "v1.2.3"
       checksum: "invalid"
     }
-
     {
       formula: "example-tool"
       tag: "v1.2.3"
