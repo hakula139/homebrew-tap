@@ -1,8 +1,7 @@
 #!/usr/bin/env nu
 
+use std-rfc/str
 use ./generate.nu
-
-const LATEST_RELEASE_QUERY = 'query($owner: String!, $name: String!) { repository(owner: $owner, name: $name) { latestRelease { tagName } } }'
 
 def render [formula: string, tag: string, source_repo: string]: nothing -> string {
   let scratch = (mktemp -d)
@@ -36,11 +35,24 @@ def main [] {
   ^git ls-files --error-unmatch $file
   let source_repo = $"hakula139/($formula)"
 
+  let latest_release_query = (
+    '
+    query($owner: String!, $name: String!) {
+      repository(owner: $owner, name: $name) {
+        latestRelease {
+          tagName
+        }
+      }
+    }
+    '
+    | str dedent
+  )
+
   mut latest = (
     ^gh api graphql
       --field "owner=hakula139"
       --field $"name=($formula)"
-      --raw-field $"query=($LATEST_RELEASE_QUERY)"
+      --raw-field $"query=($latest_release_query)"
     | from json
     | get -o data.repository.latestRelease.tagName
     | default ""
