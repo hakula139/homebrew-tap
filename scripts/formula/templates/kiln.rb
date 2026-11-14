@@ -25,7 +25,7 @@ class Kiln < Formula
     depends_on "patchelf" => :build
   end
 
-  resource "test" do
+  resource "test", :test do
     url "https://raw.githubusercontent.com/hakula139/kiln/v0.5.2/crates/kiln/tests/fixtures/example.avif"
     sha256 "27f857b290bd8e3b27c0544652713e4fd8a7458e83377eece0eca6f026bacaa9"
   end
@@ -34,7 +34,7 @@ class Kiln < Formula
     bin.install "kiln"
 
     if OS.linux?
-      system "patchelf", "--set-rpath", Formula["dav1d"].opt_lib, bin/"kiln"
+      system "patchelf", "--set-rpath", formula_opt_lib("dav1d"), bin/"kiln"
     end
   end
 
@@ -42,7 +42,7 @@ class Kiln < Formula
     assert_match version.to_s, shell_output("#{bin}/kiln --version")
 
     if OS.linux?
-      assert_match "libdav1d.so.7 => #{Formula["dav1d"].opt_lib}/libdav1d.so.7",
+      assert_match "libdav1d.so.7 => #{formula_opt_lib("dav1d")}/libdav1d.so.7",
                    shell_output("ldd #{bin}/kiln")
     end
 
