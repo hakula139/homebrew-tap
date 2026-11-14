@@ -19,6 +19,7 @@ jobs:
       fail-fast: false
       matrix:
         runner: [macos-latest, ubuntu-latest]
+
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -30,8 +31,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          for formula in kiln oxide-code; do
-            tag="v$(sed -nE 's/^  version "([^"]+)"$/\1/p' "Formula/$formula.rb")"
+          for file in Formula/*.rb; do
+            formula=$(basename "$file" .rb)
+            tag="v$(sed -nE 's/^  version "([^"]+)"$/\1/p' "$file")"
             mkdir "$RUNNER_TEMP/$formula"
             gh release download "$tag" \
               --repo "hakula139/$formula" \
@@ -50,7 +52,8 @@ jobs:
         run: |
           brew tap-new --no-git local/check
           cp Formula/*.rb "$(brew --repository local/check)/Formula/"
-          for formula in kiln oxide-code; do
+          for file in Formula/*.rb; do
+            formula=$(basename "$file" .rb)
             brew install "local/check/$formula"
             brew test "local/check/$formula"
           done

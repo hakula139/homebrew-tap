@@ -25,6 +25,7 @@ jobs:
     name: Update Formula
     runs-on: ubuntu-latest
     timeout-minutes: 15
+
     steps:
       - name: Create GitHub App token
         id: app-token
