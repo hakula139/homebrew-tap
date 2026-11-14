@@ -31,12 +31,15 @@ export def main [
       let checksum = open --raw ($sidecars | path join $"($formula)-($target).sha256")
         | split words
         | first
+
       if $checksum !~ '^[0-9a-fA-F]{64}$' {
         error make {msg: $"Invalid SHA-256 checksum for ($target)"}
       }
+
       $checksum
     }
     | collect
+
   let version = $tag | str substring 1..
   let base = $"https://github.com/hakula139/($formula)/releases/download/($tag)"
   let destination = $output | default $"Formula/($formula).rb"

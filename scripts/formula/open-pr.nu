@@ -21,6 +21,7 @@ def render [formula: string, tag: string, source_repo: string]: nothing -> strin
     rm -r $scratch
     error make $err
   }
+
   rm -r $scratch
   $rendered
 }
@@ -72,7 +73,7 @@ def main [] {
   let branch = $"chore/homebrew-($formula)-($tag)"
   let title = $"chore\(($formula)\): refresh Homebrew formula for ($tag)"
   let remote = (
-    ^git ls-remote origin $"refs/heads/($branch)" --exit-code
+    ^git ls-remote --exit-code origin $"refs/heads/($branch)"
     | complete
   )
   let existing = match $remote.exit_code {
@@ -100,6 +101,7 @@ def main [] {
         return
       }
     }
+
     1 => {
       ^git add $file
       ^git diff --cached --name-only
@@ -115,6 +117,7 @@ def main [] {
 
       ^git push origin $branch
     }
+
     _ => {
       print -e $diff.stderr
       exit $diff.exit_code
