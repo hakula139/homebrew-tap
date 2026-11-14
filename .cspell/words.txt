@@ -2,13 +2,17 @@ cachix
 devkit
 direnv
 hakula
+libdav
 linuxbrew
+lqip
 mktemp
 nixfmt
 nixos
 nixpkgs
+patchelf
 pkgs
 shellcheck
 shfmt
 substituters
+testpath
 unmatch

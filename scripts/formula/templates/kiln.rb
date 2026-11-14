@@ -3,30 +3,68 @@
 class Kiln < Formula
   desc "Fast static site generator written in Rust"
   homepage "https://github.com/hakula139/kiln"
-  url "{{base}}/kiln-x86_64-unknown-linux-gnu.tar.gz"
+  url "{{base}}/kiln-extended-x86_64-unknown-linux-gnu.tar.gz"
   version "{{version}}"
   sha256 "{{linux_x86_sha}}"
   license "MIT"
+
+  depends_on "dav1d"
 
   # Every platform needs a URL for the arch requirements below to load and report.
   on_macos do
     depends_on arch: :arm64
 
     on_arm do
-      url "{{base}}/kiln-aarch64-apple-darwin.tar.gz"
+      url "{{base}}/kiln-extended-aarch64-apple-darwin.tar.gz"
       sha256 "{{mac_arm_sha}}"
     end
   end
 
   on_linux do
     depends_on arch: :x86_64
+    depends_on "patchelf" => :build
+  end
+
+  resource "test" do
+    url "https://raw.githubusercontent.com/hakula139/kiln/v0.5.2/crates/kiln/tests/fixtures/example.avif"
+    sha256 "27f857b290bd8e3b27c0544652713e4fd8a7458e83377eece0eca6f026bacaa9"
   end
 
   def install
     bin.install "kiln"
+
+    if OS.linux?
+      system "patchelf", "--set-rpath", Formula["dav1d"].opt_lib, bin/"kiln"
+    end
   end
 
   test do
     assert_match version.to_s, shell_output("#{bin}/kiln --version")
+
+    if OS.linux?
+      assert_match "libdav1d.so.7 => #{Formula["dav1d"].opt_lib}/libdav1d.so.7",
+                   shell_output("ldd #{bin}/kiln")
+    end
+
+    (testpath/"config.toml").write <<~TOML
+      [search]
+      enabled = false
+
+      [css]
+      processor = "plain"
+    TOML
+    (testpath/"templates/post.html").write "{{ featured_image.lqip_uri }}"
+    (testpath/"content/example/index.md").write <<~MARKDOWN
+      +++
+      title = "Example"
+      featured_image = { src = "example.avif" }
+      +++
+      AVIF example.
+    MARKDOWN
+    resource("test").stage(testpath/"content/example")
+
+    system bin/"kiln", "build"
+
+    assert_match "data:image/webp;base64,", (testpath/"public/example/index.html").read
   end
 end

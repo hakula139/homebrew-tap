@@ -26,9 +26,21 @@ export def main [
 ] {
   validate $formula $tag
 
+  let template = (open --raw ($TEMPLATES_DIR | path join $"($formula).rb"))
+  let archives = (
+    $template
+    | parse --regex 'url "\{\{base\}\}/(?<archive>[^"/]+)\.tar\.gz"'
+    | get archive
+  )
+
   let checksums = ["aarch64-apple-darwin" "x86_64-unknown-linux-gnu"]
     | each {|target|
-      let checksum = open --raw ($sidecars | path join $"($formula)-($target).sha256")
+      let matching = ($archives | where {|archive| $archive | str ends-with $"-($target)" })
+      if ($matching | length) != 1 {
+        error make {msg: $"Expected one template archive for ($target)"}
+      }
+
+      let checksum = open --raw ($sidecars | path join $"($matching.0).sha256")
         | split words
         | first
 
@@ -44,7 +56,7 @@ export def main [
   let base = $"https://github.com/hakula139/($formula)/releases/download/($tag)"
   let destination = $output | default $"Formula/($formula).rb"
 
-  open --raw ($TEMPLATES_DIR | path join $"($formula).rb")
+  $template
     | str replace --all "{{base}}" $base
     | str replace --all "{{version}}" $version
     | str replace --all "{{mac_arm_sha}}" $checksums.0

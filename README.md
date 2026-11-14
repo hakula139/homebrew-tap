@@ -12,10 +12,10 @@ brew install hakula139/tap/FORMULA
 
 ## Formulae
 
-| Formula                             | Description           |
-| ----------------------------------- | --------------------- |
-| [kiln](Formula/kiln.rb)             | Static site generator |
-| [oxide-code](Formula/oxide-code.rb) | Coding agent (`ox`)   |
+| Formula                             | Description                              |
+| ----------------------------------- | ---------------------------------------- |
+| [kiln](Formula/kiln.rb)             | Static site generator with AVIF decoding |
+| [oxide-code](Formula/oxide-code.rb) | Coding agent (`ox`)                      |
 
 ## Maintain formulae
 

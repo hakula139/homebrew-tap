@@ -12,6 +12,8 @@ def sandbox [] {
 }
 
 def sidecars [scratch: path, valid: bool] {
+  let decoy_digest = ("c" | fill --width 64 --character "c")
+
   for target in [
     {
       name: "aarch64-apple-darwin"
@@ -27,7 +29,10 @@ def sidecars [scratch: path, valid: bool] {
     } else {
       "invalid"
     }
-    $"($digest)  example-tool-($target.name).tar.gz\n"
+    $"($digest)  example-runtime-extended-($target.name).tar.gz\n"
+      | save ($scratch | path join $"example-runtime-extended-($target.name).sha256")
+
+    $"($decoy_digest)  example-tool-($target.name).tar.gz\n"
       | save ($scratch | path join $"example-tool-($target.name).sha256")
   }
 }
