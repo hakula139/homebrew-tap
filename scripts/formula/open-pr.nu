@@ -25,6 +25,40 @@ def render [formula: string, tag: string, source_repo: string]: nothing -> strin
   $rendered
 }
 
+def enable-auto-merge [pr: string] {
+  let result = (
+    ^gh pr merge $pr
+      --auto
+      --squash
+    | complete
+  )
+  if $result.exit_code == 0 {
+    if $result.stdout != "" {
+      print -n $result.stdout
+    }
+    if $result.stderr != "" {
+      print -e -n $result.stderr
+    }
+    return
+  }
+
+  if ($result.stderr | str lowercase | str contains "already merged") {
+    return
+  }
+
+  if $result.stderr =~ 'Pull request is in (clean|unstable) status' {
+    (
+      ^gh pr merge $pr
+        --auto
+        --squash
+    )
+    return
+  }
+
+  print -e $result.stderr
+  exit $result.exit_code
+}
+
 # Open or update a scoped formula PR for the selected published release.
 def main [] {
   let formula = $env.FORMULA
@@ -146,21 +180,27 @@ def main [] {
     | first
   )
 
-  if $number == null {
-    (
+  let pr_target = if $number == null {
+    let url = (
       ^gh pr create
-        --base main
+        --base "main"
         --head $branch
         --title $title
-        --assignee hakula139
-        --label chore
-        --body-file .github/templates/homebrew-formula-pr.md
+        --assignee "hakula139"
+        --label "chore"
+        --body-file ".github/templates/homebrew-formula-pr.md"
+      | str trim
     )
+    print $url
+    $url
   } else {
     (
       ^gh pr edit $number
         --title $title
-        --body-file .github/templates/homebrew-formula-pr.md
+        --body-file ".github/templates/homebrew-formula-pr.md"
     )
+    $number | into string
   }
+
+  enable-auto-merge $pr_target
 }

@@ -19,13 +19,13 @@ brew install hakula139/tap/FORMULA
 
 ## Maintain formulae
 
-Source release workflows dispatch `update.yml` on `main` with `formula` and a published `tag` including `v`. The updater tracks the latest stable release, or the newest prerelease before the first stable release, and opens a PR for each formula and tag. CI checks checksums, rendering, installation and `brew test` on macOS and Linux. Merge the PR to publish the formula update.
+Source release workflows dispatch `update.yml` on `main` with `formula` and a published `tag` including `v`. The updater tracks the latest stable release, or the newest prerelease before the first stable release, and opens a PR with squash auto-merge enabled for each formula and tag. CI checks checksums, rendering, installation and `brew test` on macOS and Linux before the PR merges.
 
 ### Automation setup
 
 Install the release GitHub App on this tap with Contents, Pull requests and Actions write permissions. Set `RELEASE_APP_ID` and `RELEASE_APP_PRIVATE_KEY` as Actions secrets in this tap and each notifying source repository.
 
-Source notifications request a token with `owner: hakula139`, `repositories: homebrew-tap` and `permission-actions: write`. The tap requests Contents and Pull requests write permissions so its formula PRs trigger CI.
+Source notifications request a token with `owner: hakula139`, `repositories: homebrew-tap` and `permission-actions: write`. The tap requests Contents and Pull requests write permissions so its formula PRs trigger CI and enable auto-merge.
 
 ### Update a formula
 
@@ -42,7 +42,7 @@ gh workflow run update.yml \
   -f "tag=$tag"
 ```
 
-A rerun reuses the formula/tag branch and updates its open PR. Tags outside the selected release policy are skipped.
+A rerun reuses the formula / tag branch, updates its open PR, and enables squash auto-merge. Tags outside the selected release policy are skipped.
 
 ### Change a template
 
