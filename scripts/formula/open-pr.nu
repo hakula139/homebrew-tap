@@ -67,7 +67,7 @@ def main [] {
 
   let file = $"Formula/($formula).rb"
   ^git ls-files --error-unmatch $file
-  let source_repo = $"hakula139/($formula)"
+  let source_repo = $"hakulab/($formula)"
 
   let latest_release_query = (
     '
@@ -84,7 +84,7 @@ def main [] {
 
   mut latest = (
     ^gh api graphql
-      --field "owner=hakula139"
+      --field "owner=hakulab"
       --field $"name=($formula)"
       --raw-field $"query=($latest_release_query)"
     | from json

@@ -53,7 +53,7 @@ export def main [
     | collect
 
   let version = $tag | str substring 1..
-  let base = $"https://github.com/hakula139/($formula)/releases/download/($tag)"
+  let base = $"https://github.com/hakulab/($formula)/releases/download/($tag)"
   let destination = $output | default $"Formula/($formula).rb"
 
   $template

@@ -2,8 +2,8 @@
 
 class OxideCode < Formula
   desc "Terminal-based AI coding assistant written in Rust"
-  homepage "https://github.com/hakula139/oxide-code"
-  url "https://github.com/hakula139/oxide-code/releases/download/v0.1.0-alpha.12/oxide-code-x86_64-unknown-linux-gnu.tar.gz"
+  homepage "https://github.com/hakulab/oxide-code"
+  url "https://github.com/hakulab/oxide-code/releases/download/v0.1.0-alpha.12/oxide-code-x86_64-unknown-linux-gnu.tar.gz"
   version "0.1.0-alpha.12"
   sha256 "000b9e441c7b9c150f1b56549c681a58bbae1cf44f20d719ef9bdc51d36dbcee"
   license "MIT"
@@ -14,7 +14,7 @@ class OxideCode < Formula
     depends_on macos: :monterey
 
     on_arm do
-      url "https://github.com/hakula139/oxide-code/releases/download/v0.1.0-alpha.12/oxide-code-aarch64-apple-darwin.tar.gz"
+      url "https://github.com/hakulab/oxide-code/releases/download/v0.1.0-alpha.12/oxide-code-aarch64-apple-darwin.tar.gz"
       sha256 "1d894637ee8f081f768d06086237b03e912966f0d3afb58682c87d7bbd386bbd"
     end
   end

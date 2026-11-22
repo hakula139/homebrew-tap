@@ -7,7 +7,7 @@ Homebrew formulae maintained by Hakula.
 Replace `FORMULA` with a package name:
 
 ```bash
-brew install hakula139/tap/FORMULA
+brew install hakulab/tap/FORMULA
 ```
 
 ## Formulae
@@ -36,7 +36,7 @@ formula=FORMULA
 tag=vX.Y.Z
 
 gh workflow run update.yml \
-  --repo hakula139/homebrew-tap \
+  --repo hakulab/homebrew-tap \
   --ref main \
   -f "formula=$formula" \
   -f "tag=$tag"
@@ -52,7 +52,7 @@ Templates live in `scripts/formula/templates/`. Keep their platform requirements
 sidecars=$(mktemp -d)
 
 gh release download "$tag" \
-  --repo "hakula139/$formula" \
+  --repo "hakulab/$formula" \
   --pattern '*.sha256' \
   --dir "$sidecars"
 
