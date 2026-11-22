@@ -27,7 +27,7 @@ jobs:
           fetch-depth: 0
 
       - name: Set up Nix
-        uses: hakula139/devkit/.github/actions/setup-nix@v3
+        uses: hakulab/devkit/.github/actions/setup-nix@v3
 
       - name: Put Homebrew on PATH
         if: runner.os == 'Linux'
