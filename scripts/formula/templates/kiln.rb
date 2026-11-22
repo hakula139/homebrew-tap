@@ -2,7 +2,7 @@
 
 class Kiln < Formula
   desc "Fast static site generator written in Rust"
-  homepage "https://github.com/hakula139/kiln"
+  homepage "https://github.com/hakulab/kiln"
   url "{{base}}/kiln-extended-x86_64-unknown-linux-gnu.tar.gz"
   version "{{version}}"
   sha256 "{{linux_x86_sha}}"
@@ -26,7 +26,7 @@ class Kiln < Formula
   end
 
   resource "test", :test do
-    url "https://raw.githubusercontent.com/hakula139/kiln/v0.5.2/crates/kiln/tests/fixtures/example.avif"
+    url "https://raw.githubusercontent.com/hakulab/kiln/v0.5.2/crates/kiln/tests/fixtures/example.avif"
     sha256 "27f857b290bd8e3b27c0544652713e4fd8a7458e83377eece0eca6f026bacaa9"
   end
 

@@ -2,7 +2,7 @@
 
 class OxideCode < Formula
   desc "Terminal-based AI coding assistant written in Rust"
-  homepage "https://github.com/hakula139/oxide-code"
+  homepage "https://github.com/hakulab/oxide-code"
   url "{{base}}/oxide-code-x86_64-unknown-linux-gnu.tar.gz"
   version "{{version}}"
   sha256 "{{linux_x86_sha}}"
