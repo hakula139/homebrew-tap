@@ -25,7 +25,7 @@ Source release workflows dispatch `update.yml` on `main` with `formula` and a pu
 
 Install the release GitHub App on this tap with Contents, Pull requests and Actions write permissions. Set `RELEASE_APP_ID` and `RELEASE_APP_PRIVATE_KEY` as Actions secrets in this tap and each notifying source repository.
 
-Source notifications request a token with `owner: hakula139`, `repositories: homebrew-tap` and `permission-actions: write`. The tap requests Contents and Pull requests write permissions so its formula PRs trigger CI and enable auto-merge.
+The formula updater uses the App token to open PRs so GitHub runs their required checks.
 
 ### Update a formula
 
