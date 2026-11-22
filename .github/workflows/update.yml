@@ -32,8 +32,6 @@ jobs:
         with:
           client-id: ${{ secrets.RELEASE_APP_ID }}
           private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
-          owner: hakula139
-          repositories: homebrew-tap
           permission-contents: write
           permission-pull-requests: write
 
