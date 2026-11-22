@@ -2,6 +2,7 @@ cachix
 devkit
 direnv
 hakula
+hakulab
 libdav
 linuxbrew
 lqip
