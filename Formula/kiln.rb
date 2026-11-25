@@ -3,9 +3,9 @@
 class Kiln < Formula
   desc "Fast static site generator written in Rust"
   homepage "https://github.com/hakulab/kiln"
-  url "https://github.com/hakulab/kiln/releases/download/v1.0.0/kiln-extended-x86_64-unknown-linux-gnu.tar.gz"
-  version "1.0.0"
-  sha256 "ba292cfc4f4a9a53c68ba5659fcbe4ec0e79f9888353ce9aadafc94974aed62a"
+  url "https://github.com/hakulab/kiln/releases/download/v1.0.1/kiln-extended-x86_64-unknown-linux-gnu.tar.gz"
+  version "1.0.1"
+  sha256 "69c6f474322987d0d1592d1193158076fccc982d5211ebf5122996c747a34406"
   license "MIT"
 
   depends_on "dav1d"
@@ -15,8 +15,8 @@ class Kiln < Formula
     depends_on arch: :arm64
 
     on_arm do
-      url "https://github.com/hakulab/kiln/releases/download/v1.0.0/kiln-extended-aarch64-apple-darwin.tar.gz"
-      sha256 "37a6ba11fc269df1f4d5af14e65a41763b49f4637e522b18449a4a454dabca39"
+      url "https://github.com/hakulab/kiln/releases/download/v1.0.1/kiln-extended-aarch64-apple-darwin.tar.gz"
+      sha256 "612560e67060660d33d903513a05165b2fbe471899dbe102c82b929d7c2bd182"
     end
   end
 
